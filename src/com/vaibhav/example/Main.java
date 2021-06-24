@@ -2,6 +2,7 @@ package com.vaibhav.example;
 
 import java.text.DecimalFormat;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Collectors.*;
 
@@ -59,8 +60,12 @@ public class Main {
 
         Map<String, List<Employee>> result = employees.stream()
                 .collect(groupingBy(Employee::getGender, toList()));
+        Map<Boolean, List<Employee>> booleanListMap = employees.stream().collect(Collectors.partitioningBy( e -> e.getGender().equals("Male")));
         return result;
     }
+//    public static Map<Character, Long> characterIntegerMap(String name){
+//
+//    }
 
 
     //Print the name of all departments in the organization?
@@ -153,8 +158,22 @@ public class Main {
                 mapping(Employee::getName, toList())));
     }
 
+    public static Map<Character, Long> charFrequencyMap(String word){
+        return  word.chars()
+                .mapToObj(c -> (char) c)
+                .collect(Collectors.groupingBy(c -> c, Collectors.counting()));
+    }
+
+    public static Map<Character, Long> charFrequencyMapSortedAlphabetically(String word){
+        Function<Character, Character> func = c -> c;
+        return  word.chars()
+                .mapToObj(c -> (char) c)
+                .collect(Collectors.groupingBy(func, TreeMap::new ,Collectors.counting()));
+    }
+
 
     public static void main(String[] args) {
+
         System.out.println(groupEmployeesByGender());
         System.out.println(getDepartmentList());
         System.out.println(avgAgeByGender());
@@ -166,6 +185,12 @@ public class Main {
         System.out.println(getMaleAndFemaleEmployeesCountInSales());
         System.out.println(averageSalaryByGender());
         System.out.println(getNamesByDepartment());
+
+        System.out.println(charFrequencyMap("mississippi"));
+
+        System.out.println(charFrequencyMapSortedAlphabetically("mississippi"));
+
+
 
     }
 }
