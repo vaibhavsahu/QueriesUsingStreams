@@ -171,6 +171,17 @@ public class Main {
                 .collect(Collectors.groupingBy(func, TreeMap::new ,Collectors.counting()));
     }
 
+    public static Map<String, List<String>> groupAnagrams(List<String> words){
+
+        Function<String, String> anagram = word -> word.chars()
+                .mapToObj( c -> (char) c)
+                .sorted()
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
+
+        return words.stream().collect(Collectors.groupingBy(anagram));
+    }
+
 
     public static void main(String[] args) {
 
@@ -189,6 +200,8 @@ public class Main {
         System.out.println(charFrequencyMap("mississippi"));
 
         System.out.println(charFrequencyMapSortedAlphabetically("mississippi"));
+
+        System.out.println(groupAnagrams(Arrays.asList("tea", "ate", "abc", "cba", "aa")));
 
 
 
